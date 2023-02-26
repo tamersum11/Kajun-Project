@@ -136,11 +136,8 @@ class Application(QWidget):
         messageBox.setIcon(QMessageBox.Icon.Information)
         messageBox.setStyleSheet(str("QPushButton{ background-color: grey; color: #fbb03c; border-width: 4px; border-color: #fbb03c; }" +
                                     "QPushButton::hover{ background-color: #fbb03c; color: #2e2f33; }"))
-        messageBox.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
-        button = messageBox.exec()
-
-        if button == QMessageBox.StandardButton.Cancel:
-            self.quit()
+        messageBox.setStandardButtons(QMessageBox.StandardButton.Ok)
+        messageBox.exec()
     
     def showWarning(self, text: str) -> None:
         messageBox = QMessageBox(self)
@@ -149,11 +146,8 @@ class Application(QWidget):
         messageBox.setIcon(QMessageBox.Icon.Critical)
         messageBox.setStyleSheet(str("QPushButton{ background-color: grey; color: #fbb03c; border-width: 4px; solid; border-color: #fbb03c; }" +
                                     "QPushButton::hover{ background-color: #fbb03c; color: #2e2f33; }"))
-        messageBox.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
-        button = messageBox.exec()
-
-        if button == QMessageBox.StandardButton.Cancel:
-            self.quit()
+        messageBox.setStandardButtons(QMessageBox.StandardButton.Ok)
+        messageBox.exec()
     
     def mousePressEvent(self, event: QMouseEvent) -> None:
         if event.type() == QEvent.Type.MouseButtonPress:
