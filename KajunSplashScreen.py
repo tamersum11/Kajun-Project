@@ -5,11 +5,13 @@ from PySide6.QtGui import QAction, QPixmap, QMouseEvent, QKeyEvent, QCursor, QKe
 from PySide6.QtWidgets import QApplication, QWidget, QMenu, QFrame, QVBoxLayout, QLabel, QProgressBar, QMessageBox, QLayout
 from PySide6.QtCore import Qt, QEvent
 
+# Test Progress
+from TestProgress import TestProgress 
+
 path = os.path.dirname(__file__)
+DefaultInfoText = str("Progress is successfully done.")
+DefaultWarningText = str("Progress failed unexpectedly!")
 
-defaultInfoText = str("Progress is successfully done.")
-
-defaultWarningText = str("Progress can not start!")
 
 class KajunSplashScreen(QWidget):
     def __init__(self, app: QApplication) -> None:
@@ -21,15 +23,18 @@ class KajunSplashScreen(QWidget):
         self.initialiseComponents()
         self.keyReleaseEvent
         
+
     def initialiseMemberVariables(self, app: QApplication) -> None:
         self.app = app
         self.pixmap = QPixmap(os.path.join(path, "images", "kajun_logo.png"))
+
 
     def initialiseProperties(self) -> None:
         self.setWindowIcon(self.pixmap)
         self.setWindowFlags(Qt.WindowType.SplashScreen | Qt.WindowType.WindowStaysOnTopHint)
         self.setFixedSize(400, 300)
         self.setStyleSheet("background-color: #2e2f33; color: #fbb03c; ")
+
 
     def initialiseComponents(self) -> None:
         # Pop-up
@@ -39,7 +44,7 @@ class KajunSplashScreen(QWidget):
 
         # Pop-up Quit Action
         self.quitAction = QAction("Close")
-        self.quitAction.setShortcut(QKeySequence("q"))
+        self.quitAction.setShortcut(QKeySequence("c"))
         self.quitAction.triggered.connect(self.quit)
         self.popup.addAction(self.quitAction)
 
@@ -48,13 +53,13 @@ class KajunSplashScreen(QWidget):
         # Pop-up Start Progress Action
         self.restartProgressAction = QAction("Restart Progress")
         self.restartProgressAction.setShortcut(QKeySequence("r"))
-        self.restartProgressAction.triggered.connect(self.startProgress)
+        self.restartProgressAction.triggered.connect(self.restartProgress)
         self.popup.addAction(self.restartProgressAction)
 
         # Pop-up Stop Progress Action
         self.stopProgressAction = QAction("Stop Progress")
         self.stopProgressAction.setShortcut(QKeySequence("s"))
-        # self.stopProgressAction.triggered.connect(self.stopProgress)
+        self.stopProgressAction.triggered.connect(self.stopProgress)
         self.popup.addAction(self.stopProgressAction)
 
         # Image Component
@@ -117,17 +122,24 @@ class KajunSplashScreen(QWidget):
         self.verticalLayout.addWidget(self.infoFrame)
         self.setLayout(self.verticalLayout)
     
-    def startProgress(self) -> None:
-        for progress in range(100):
-            sleep(0.05)
-            info = str("Lorem ipsum dolor sit amet, consectetur adipiscing elit. \n" +
-                       f"Test Progress Info Label Progress Id: {progress + 1}")
-            self.infoLabel.setText(info)
-            self.progressBar.setValue(progress + 1)
 
-        self.showInformation(defaultInfoText)    
-            
-        # self.showWarning(defaultWarningText)
+    def startProgress(self) -> bool:
+        progress = TestProgress(self.infoLabel, self.progressBar)
+        return progress.startProgress()
+    
+
+    def restartProgress(self) -> bool:
+        status = self.startProgress()
+        if status:
+            self.showInformation(DefaultInfoText)
+        else:
+            self.showWarning(DefaultWarningText)
+        return status
+    
+
+    def stopProgress(self) -> None:
+        pass
+    
 
     def showInformation(self, text: str) -> None:
         messageBox = QMessageBox(self)
@@ -139,6 +151,7 @@ class KajunSplashScreen(QWidget):
         messageBox.setStandardButtons(QMessageBox.StandardButton.Ok)
         messageBox.exec()
     
+
     def showWarning(self, text: str) -> None:
         messageBox = QMessageBox(self)
         messageBox.setWindowTitle("Error")
@@ -149,6 +162,7 @@ class KajunSplashScreen(QWidget):
         messageBox.setStandardButtons(QMessageBox.StandardButton.Ok)
         messageBox.exec()
     
+
     def mousePressEvent(self, event: QMouseEvent) -> None:
         if event.type() == QEvent.Type.MouseButtonPress:
             if event.button() == Qt.MouseButton.LeftButton:
@@ -158,16 +172,18 @@ class KajunSplashScreen(QWidget):
                 self.popup.move(currentMouseCursor)
                 self.popup.show()
 
+
     def keyPressEvent(self, event: QKeyEvent) -> None:
-        if event.key() == 81:
+        if event.key() == 67:
             self.quit()
         elif event.key() == 82:
             self.startProgress()
         elif event.key() == 83:
-            # self.stopProgress()
+            self.stopProgress()
             pass
         else:
             super(KajunSplashScreen, self).keyPressEvent(event)
+
 
     def quit(self) -> None:
         self.app.quit()
