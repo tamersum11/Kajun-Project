@@ -8,6 +8,8 @@ def main() -> int:
     app = QApplication(sys.argv)
     widget = Application(app)
     widget.show()
+
+    widget.startProgress()
     
     return app.exec()
 
