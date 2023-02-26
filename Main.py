@@ -2,14 +2,14 @@ import sys
 
 from PySide6.QtWidgets import QApplication
 
-from Kajun_Application import Application
+from KajunSplashScreen import KajunSplashScreen
 
 def main() -> int:
     app = QApplication(sys.argv)
-    widget = Application(app)
-    widget.show()
+    splash = KajunSplashScreen(app)
+    splash.show()
 
-    widget.startProgress()
+    splash.startProgress()
     
     return app.exec()
 

@@ -11,9 +11,9 @@ defaultInfoText = str("Progress is successfully done.")
 
 defaultWarningText = str("Progress can not start!")
 
-class Application(QWidget):
+class KajunSplashScreen(QWidget):
     def __init__(self, app: QApplication) -> None:
-        super(Application, self).__init__()
+        super(KajunSplashScreen, self).__init__()
         
         # Don't change the function call order
         self.initialiseMemberVariables(app)
@@ -167,7 +167,7 @@ class Application(QWidget):
             # self.stopProgress()
             pass
         else:
-            super(Application, self).keyPressEvent(event)
+            super(KajunSplashScreen, self).keyPressEvent(event)
 
     def quit(self) -> None:
         self.app.quit()
