@@ -1,5 +1,4 @@
 import os
-from time import sleep
 
 from PySide6.QtGui import QAction, QPixmap, QMouseEvent, QKeyEvent, QCursor, QKeySequence
 from PySide6.QtWidgets import QApplication, QWidget, QMenu, QFrame, QVBoxLayout, QLabel, QProgressBar, QMessageBox, QLayout
@@ -7,6 +6,7 @@ from PySide6.QtCore import Qt, QEvent
 
 # Test Progress
 from TestProgress import TestProgress 
+
 
 path = os.path.dirname(__file__)
 DefaultInfoText = str("Progress is successfully done.")
