@@ -1,7 +1,10 @@
+import os
+
+from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import  QApplication, QFrame, QVBoxLayout, QLabel, QProgressBar, QLayout
 from PySide6.QtCore import Qt
 
-from BaseKajunApp import BaseKajunApp, KajunApplicationType
+from BaseKajunApp import BaseKajunApp, KajunApplicationType, Path
 
 
 class KajunSplashScreen(BaseKajunApp):
@@ -20,7 +23,7 @@ class KajunSplashScreen(BaseKajunApp):
 
         # Image Component
         self.image = QLabel()
-        self.image.setPixmap(self.pixmap)
+        self.image.setPixmap(QPixmap(os.path.join(Path, "images", "kajun_logo_splash.png")))
         self.image.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignBottom)
 
         # Image Frame

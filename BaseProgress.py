@@ -47,39 +47,39 @@ class BaseProgress:
             return False
 
 
-    def restartSplashScreenProgress(self) -> bool:
-        return False
+    def restartSplashScreenProgress(self) -> int:
+        return -1
     
 
-    def restartMainWindowProgress(self) -> bool:
-        return False
+    def restartMainWindowProgress(self) -> int:
+        return -1
 
 
-    def restartProgress(self, appType: KajunApplicationType) -> bool:
+    def restartProgress(self, appType: KajunApplicationType) -> int:
         if appType == KajunApplicationType.SPLASHSCREEN:
             return self.restartSplashScreenProgress()
         elif appType == KajunApplicationType.MAINWINDOW:
             return self.restartMainWindowProgress()
         else:
-            return False
+            return -1
     
 
-    def stopSplashScreenProgress(self) -> None:
-        pass
+    def stopSplashScreenProgress(self) -> int:
+        return -1
     
 
-    def stopMainWindowProgress(self) -> None:
-        pass
+    def stopMainWindowProgress(self) -> int:
+        return -1
 
 
-    def stopProgress(self, appType: KajunApplicationType) -> None:
+    def stopProgress(self, appType: KajunApplicationType) -> int:
         if appType == KajunApplicationType.SPLASHSCREEN:
-            self.stopSplashScreenProgress()
+            return self.stopSplashScreenProgress()
         elif appType == KajunApplicationType.MAINWINDOW:
-            self.stopMainWindowProgress()
+            return self.stopMainWindowProgress()
 
 
-    def splashScreenProgressSuccess(self) -> None:
+    def splashScreenProgressSuccess(self) -> int:
         self.kajunApp.showInformation(DefaultInfoText)
         self.kajunApp.close()
 
@@ -89,14 +89,16 @@ class BaseProgress:
         self.kajunApp.setBaseProgress(self)
         self.kajunApp.show()
 
+        return -1
 
-    def checkProgressStatus(self, status: bool) -> None:
-        appType = self.kajunApp.getApplicationType()
-        
+
+    def checkProgressStatus(self, status: bool) -> int:        
         if status:
+            appType = self.kajunApp.getApplicationType()
+            
             if appType == KajunApplicationType.SPLASHSCREEN:
-                self.splashScreenProgressSuccess()
+                return self.splashScreenProgressSuccess()
             elif appType == KajunApplicationType.MAINWINDOW:
-                self.stopMainWindowProgress()
+                return self.stopMainWindowProgress()
         else:
-            self.kajunApp.showWarning(DefaultWarningText)
+            return self.kajunApp.showWarning(DefaultWarningText)

@@ -8,7 +8,7 @@ from PySide6.QtCore import Qt, QEvent
 import BaseProgress
 
 
-path = os.path.dirname(__file__)
+Path = os.path.dirname(__file__)
 DefaultInfoText = str("Progress is successfully done.")
 DefaultWarningText = str("Progress failed unexpectedly!")
 
@@ -32,7 +32,7 @@ class BaseKajunApp(QWidget):
     def initialiseMemberVariables(self, app: QApplication, appType: KajunApplicationType) -> None:
         self.app = app
         self.appType = appType
-        self.pixmap = QPixmap(os.path.join(path, "images", "kajun_logo.png"))
+        self.pixmap = QPixmap(os.path.join(Path, "images", "kajun_logo.png"))
 
 
     def initialiseProperties(self) -> None:
@@ -67,7 +67,7 @@ class BaseKajunApp(QWidget):
         self.popup.addAction(self.stopProgressAction)
 
 
-    def showInformation(self, text: str) -> None:
+    def showInformation(self, text: str) -> int:
         messageBox = QMessageBox(self)
         messageBox.setWindowTitle("Information")
         messageBox.setText(text)
@@ -75,10 +75,11 @@ class BaseKajunApp(QWidget):
         messageBox.setStyleSheet(str("QPushButton{ background-color: grey; color: #fbb03c; border-width: 4px; border-color: #fbb03c; }" +
                                     "QPushButton::hover{ background-color: #fbb03c; color: #2e2f33; }"))
         messageBox.setStandardButtons(QMessageBox.StandardButton.Ok)
-        messageBox.exec()
+        
+        return messageBox.exec()
 
     
-    def showWarning(self, text: str) -> None:
+    def showWarning(self, text: str) -> int:
         messageBox = QMessageBox(self)
         messageBox.setWindowTitle("Error")
         messageBox.setText(text)
@@ -86,7 +87,8 @@ class BaseKajunApp(QWidget):
         messageBox.setStyleSheet(str("QPushButton{ background-color: grey; color: #fbb03c; border-width: 4px; solid; border-color: #fbb03c; }" +
                                     "QPushButton::hover{ background-color: #fbb03c; color: #2e2f33; }"))
         messageBox.setStandardButtons(QMessageBox.StandardButton.Ok)
-        messageBox.exec()
+        
+        return messageBox.exec()
 
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
@@ -130,11 +132,11 @@ class BaseKajunApp(QWidget):
         return self.progress.startProgress(self.appType)
     
 
-    def restartProgress(self) -> bool:
+    def restartProgress(self) -> int:
         return self.progress.restartProgress(self.appType)
     
 
-    def stopProgress(self) -> None:
+    def stopProgress(self) -> int:
         self.progress.stopProgress(self.appType)
 
 
