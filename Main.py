@@ -2,19 +2,21 @@ import sys
 
 from PySide6.QtWidgets import QApplication
 
-from KajunSplashScreen import KajunSplashScreen, DefaultInfoText, DefaultWarningText
+from BaseProgress import BaseProgress
+# Test Progress
+from TestProgress import TestProgress
+
+
+def getMainProgress(app: QApplication) -> BaseProgress:
+    return TestProgress(app)
+
 
 def main() -> int:
     app = QApplication(sys.argv)
-    splash = KajunSplashScreen(app)
-    splash.show()
-
-    if splash.startProgress():
-        splash.showInformation(DefaultInfoText)
-    else:
-        splash.showWarning(DefaultWarningText)
+    progress = getMainProgress(app)
     
-    return app.exec()
+    return progress.initialise()
+
 
 if __name__ == "__main__":
     main()

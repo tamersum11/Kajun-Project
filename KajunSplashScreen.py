@@ -1,66 +1,22 @@
-import os
+from PySide6.QtWidgets import  QApplication, QFrame, QVBoxLayout, QLabel, QProgressBar, QLayout
+from PySide6.QtCore import Qt
 
-from PySide6.QtGui import QAction, QPixmap, QMouseEvent, QKeyEvent, QCursor, QKeySequence
-from PySide6.QtWidgets import QApplication, QWidget, QMenu, QFrame, QVBoxLayout, QLabel, QProgressBar, QMessageBox, QLayout
-from PySide6.QtCore import Qt, QEvent
-
-# Test Progress
-from TestProgress import TestProgress 
+from BaseKajunApp import BaseKajunApp, KajunApplicationType
 
 
-path = os.path.dirname(__file__)
-DefaultInfoText = str("Progress is successfully done.")
-DefaultWarningText = str("Progress failed unexpectedly!")
-
-
-class KajunSplashScreen(QWidget):
+class KajunSplashScreen(BaseKajunApp):
     def __init__(self, app: QApplication) -> None:
-        super(KajunSplashScreen, self).__init__()
-        
-        # Don't change the function call order
-        self.initialiseMemberVariables(app)
-        self.initialiseProperties()
-        self.initialiseComponents()
-        self.keyReleaseEvent
-        
-
-    def initialiseMemberVariables(self, app: QApplication) -> None:
-        self.app = app
-        self.pixmap = QPixmap(os.path.join(path, "images", "kajun_logo.png"))
+        super(KajunSplashScreen, self).__init__(app, KajunApplicationType.SPLASHSCREEN)
 
 
     def initialiseProperties(self) -> None:
-        self.setWindowIcon(self.pixmap)
+        super(KajunSplashScreen, self).initialiseProperties()
         self.setWindowFlags(Qt.WindowType.SplashScreen | Qt.WindowType.WindowStaysOnTopHint)
         self.setFixedSize(400, 300)
-        self.setStyleSheet("background-color: #2e2f33; color: #fbb03c; ")
 
 
     def initialiseComponents(self) -> None:
-        # Pop-up
-        self.popup = QMenu()
-        self.popup.setStyleSheet(str("QMenu{ background-color: #2e2f33; color: #fbb03c; }" + 
-                                    "QMenu::item:selected{ background-color: #fbb03c; color: #2e2f33; }"))
-
-        # Pop-up Quit Action
-        self.quitAction = QAction("Close")
-        self.quitAction.setShortcut(QKeySequence("c"))
-        self.quitAction.triggered.connect(self.quit)
-        self.popup.addAction(self.quitAction)
-
-        self.popup.addSeparator()
-
-        # Pop-up Start Progress Action
-        self.restartProgressAction = QAction("Restart Progress")
-        self.restartProgressAction.setShortcut(QKeySequence("r"))
-        self.restartProgressAction.triggered.connect(self.restartProgress)
-        self.popup.addAction(self.restartProgressAction)
-
-        # Pop-up Stop Progress Action
-        self.stopProgressAction = QAction("Stop Progress")
-        self.stopProgressAction.setShortcut(QKeySequence("s"))
-        self.stopProgressAction.triggered.connect(self.stopProgress)
-        self.popup.addAction(self.stopProgressAction)
+        super(KajunSplashScreen, self).initialiseComponents()
 
         # Image Component
         self.image = QLabel()
@@ -121,69 +77,8 @@ class KajunSplashScreen(QWidget):
         self.verticalLayout.addWidget(self.imageFrame)
         self.verticalLayout.addWidget(self.infoFrame)
         self.setLayout(self.verticalLayout)
-    
-
-    def startProgress(self) -> bool:
-        progress = TestProgress(self.infoLabel, self.progressBar)
-        return progress.startProgress()
-    
-
-    def restartProgress(self) -> bool:
-        status = self.startProgress()
-        if status:
-            self.showInformation(DefaultInfoText)
-        else:
-            self.showWarning(DefaultWarningText)
-        return status
-    
-
-    def stopProgress(self) -> None:
-        pass
-    
-
-    def showInformation(self, text: str) -> None:
-        messageBox = QMessageBox(self)
-        messageBox.setWindowTitle("Information")
-        messageBox.setText(text)
-        messageBox.setIcon(QMessageBox.Icon.Information)
-        messageBox.setStyleSheet(str("QPushButton{ background-color: grey; color: #fbb03c; border-width: 4px; border-color: #fbb03c; }" +
-                                    "QPushButton::hover{ background-color: #fbb03c; color: #2e2f33; }"))
-        messageBox.setStandardButtons(QMessageBox.StandardButton.Ok)
-        messageBox.exec()
-    
-
-    def showWarning(self, text: str) -> None:
-        messageBox = QMessageBox(self)
-        messageBox.setWindowTitle("Error")
-        messageBox.setText(text)
-        messageBox.setIcon(QMessageBox.Icon.Critical)
-        messageBox.setStyleSheet(str("QPushButton{ background-color: grey; color: #fbb03c; border-width: 4px; solid; border-color: #fbb03c; }" +
-                                    "QPushButton::hover{ background-color: #fbb03c; color: #2e2f33; }"))
-        messageBox.setStandardButtons(QMessageBox.StandardButton.Ok)
-        messageBox.exec()
-    
-
-    def mousePressEvent(self, event: QMouseEvent) -> None:
-        if event.type() == QEvent.Type.MouseButtonPress:
-            if event.button() == Qt.MouseButton.LeftButton:
-                self.popup.close()
-            if event.button() == Qt.MouseButton.RightButton:
-                currentMouseCursor = QCursor.pos()
-                self.popup.move(currentMouseCursor)
-                self.popup.show()
 
 
-    def keyPressEvent(self, event: QKeyEvent) -> None:
-        if event.key() == 67:
-            self.quit()
-        elif event.key() == 82:
-            self.startProgress()
-        elif event.key() == 83:
-            self.stopProgress()
-            pass
-        else:
-            super(KajunSplashScreen, self).keyPressEvent(event)
-
-
-    def quit(self) -> None:
-        self.app.quit()
+    def setProgressProperties(self) -> None:
+        self.progress.setInfoLabel(self.infoLabel)
+        self.progress.setProgressBar(self.progressBar)
