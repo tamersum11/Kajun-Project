@@ -1,6 +1,6 @@
 import os
 
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QPixmap, QAction, QKeySequence
 from PySide6.QtWidgets import  QApplication, QFrame, QVBoxLayout, QLabel, QProgressBar, QLayout
 from PySide6.QtCore import Qt
 
@@ -80,6 +80,22 @@ class KajunSplashScreen(BaseKajunApp):
         self.verticalLayout.addWidget(self.imageFrame)
         self.verticalLayout.addWidget(self.infoFrame)
         self.setLayout(self.verticalLayout)
+
+    
+    def initialisePopUpMenu(self) -> None:
+        super(KajunSplashScreen, self).initialisePopUpMenu()
+        
+        # Pop-up Start Progress Action
+        self.restartProgressAction = QAction("Restart Progress")
+        self.restartProgressAction.setShortcut(QKeySequence("r"))
+        self.restartProgressAction.triggered.connect(self.restartProgress)
+        self.popup.addAction(self.restartProgressAction)
+
+        # Pop-up Stop Progress Action
+        self.stopProgressAction = QAction("Stop Progress")
+        self.stopProgressAction.setShortcut(QKeySequence("s"))
+        self.stopProgressAction.triggered.connect(self.stopProgress)
+        self.popup.addAction(self.stopProgressAction)
 
 
     def setProgressProperties(self) -> None:

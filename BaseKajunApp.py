@@ -26,7 +26,8 @@ class BaseKajunApp(QWidget):
          # Don't change the function call order
         self.initialiseMemberVariables(app, appType)
         self.initialiseProperties() 
-        self.initialiseComponents()       
+        self.initialiseComponents()
+        self.initialisePopUpMenu()   
 
     
     def initialiseMemberVariables(self, app: QApplication, appType: KajunApplicationType) -> None:
@@ -45,7 +46,9 @@ class BaseKajunApp(QWidget):
         self.popup = QMenu()
         self.popup.setStyleSheet(str("QMenu{ background-color: #2e2f33; color: #fbb03c; }" + 
                                     "QMenu::item:selected{ background-color: #fbb03c; color: #2e2f33; }"))
-        
+
+    
+    def initialisePopUpMenu(self) -> None:
         # Pop-up Quit Action
         self.quitAction = QAction("Close")
         self.quitAction.setShortcut(QKeySequence("c"))
@@ -53,18 +56,6 @@ class BaseKajunApp(QWidget):
         self.popup.addAction(self.quitAction)
 
         self.popup.addSeparator()
-
-        # Pop-up Start Progress Action
-        self.restartProgressAction = QAction("Restart Progress")
-        self.restartProgressAction.setShortcut(QKeySequence("r"))
-        self.restartProgressAction.triggered.connect(self.restartProgress)
-        self.popup.addAction(self.restartProgressAction)
-
-        # Pop-up Stop Progress Action
-        self.stopProgressAction = QAction("Stop Progress")
-        self.stopProgressAction.setShortcut(QKeySequence("s"))
-        self.stopProgressAction.triggered.connect(self.stopProgress)
-        self.popup.addAction(self.stopProgressAction)
 
 
     def showInformation(self, text: str) -> int:
