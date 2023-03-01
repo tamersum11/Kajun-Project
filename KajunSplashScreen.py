@@ -1,6 +1,6 @@
 import os
 
-from PySide6.QtGui import QPixmap, QAction, QKeySequence
+from PySide6.QtGui import QPixmap, QAction, QKeySequence, QKeyEvent
 from PySide6.QtWidgets import  QApplication, QFrame, QVBoxLayout, QLabel, QProgressBar, QLayout
 from PySide6.QtCore import Qt
 
@@ -101,3 +101,12 @@ class KajunSplashScreen(BaseKajunApp):
     def setProgressProperties(self) -> None:
         self.progress.setInfoLabel(self.infoLabel)
         self.progress.setProgressBar(self.progressBar)
+
+
+    def keyPressEvent(self, event: QKeyEvent) -> None:
+            if event.key() == 82:
+                self.startProgress()
+            elif event.key() == 83:
+                self.stopProgress()
+            else:
+                super(KajunSplashScreen, self).keyPressEvent(event)   

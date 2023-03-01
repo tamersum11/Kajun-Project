@@ -1,4 +1,4 @@
-from PySide6.QtGui import QAction, QKeySequence
+from PySide6.QtGui import QAction, QKeySequence, QKeyEvent
 from PySide6.QtWidgets import QApplication, QFrame, QVBoxLayout, QHBoxLayout
 from PySide6.QtCore import Qt
 
@@ -95,4 +95,15 @@ class KajunApplication(BaseKajunApp):
         self.clearPageFrameLayout()
         self.currentPage = KajunVulnerabilitiesPage(self)
         self.pageFrameLayout.addWidget(self.currentPage)
+
+    
+    def keyPressEvent(self, event: QKeyEvent) -> None:
+            if event.key() == 72:
+                self.homePage()
+            elif event.key() == 73:
+                self.informationPage()
+            elif event.key() == 86:
+                self.vulnerabilitiesPage()
+            else:
+                super(KajunApplication, self).keyPressEvent(event)    
         

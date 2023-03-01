@@ -97,11 +97,6 @@ class BaseKajunApp(QWidget):
     def keyPressEvent(self, event: QKeyEvent) -> None:
             if event.key() == 67:
                 self.quit()
-            elif event.key() == 82:
-                self.startProgress()
-            elif event.key() == 83:
-                self.stopProgress()
-                pass
             else:
                 super(BaseKajunApp, self).keyPressEvent(event)      
 
