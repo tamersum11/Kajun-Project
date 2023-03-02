@@ -1,13 +1,15 @@
 from PySide6.QtWidgets import QApplication, QLabel, QProgressBar
 
 from KajunAppFactory import KajunAppFactory, BaseKajunApp, KajunApplicationType
+from KajunSystemTrayIcon import KajunSystemTrayIcon
 from BaseKajunApp import  DefaultInfoText, DefaultWarningText
 
 
 class BaseProgress:
     def __init__(self, app: QApplication) -> None:
         self.app = app
-        self.appFactory = KajunAppFactory(app)
+        self.systemTrayIcon = KajunSystemTrayIcon(self.app)
+        self.appFactory = KajunAppFactory()
 
     
     def setInfoLabel(self, infoLabel: QLabel) -> None:
@@ -80,7 +82,7 @@ class BaseProgress:
 
 
     def splashScreenProgressSuccess(self) -> int:
-        self.kajunApp.showInformation(DefaultInfoText)
+        self.systemTrayIcon.showInformation(DefaultInfoText)
         self.kajunApp.close()
 
         # Main Window

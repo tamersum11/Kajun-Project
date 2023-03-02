@@ -1,15 +1,15 @@
 import os
 
 from PySide6.QtGui import QPixmap, QAction, QKeySequence, QKeyEvent
-from PySide6.QtWidgets import  QApplication, QFrame, QVBoxLayout, QLabel, QProgressBar, QLayout
+from PySide6.QtWidgets import QFrame, QVBoxLayout, QLabel, QProgressBar, QLayout
 from PySide6.QtCore import Qt
 
 from BaseKajunApp import BaseKajunApp, KajunApplicationType, Path
 
 
 class KajunSplashScreen(BaseKajunApp):
-    def __init__(self, app: QApplication) -> None:
-        super(KajunSplashScreen, self).__init__(app, KajunApplicationType.SPLASHSCREEN)
+    def __init__(self) -> None:
+        super(KajunSplashScreen, self).__init__(KajunApplicationType.SPLASHSCREEN)
 
 
     def initialiseProperties(self) -> None:

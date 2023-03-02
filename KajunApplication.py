@@ -1,5 +1,5 @@
 from PySide6.QtGui import QAction, QKeySequence, QKeyEvent
-from PySide6.QtWidgets import QApplication, QFrame, QVBoxLayout, QHBoxLayout
+from PySide6.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout
 from PySide6.QtCore import Qt
 
 from BaseKajunApp import BaseKajunApp, KajunApplicationType
@@ -10,13 +10,13 @@ from KajunVulnerabilitiesPage import KajunVulnerabilitiesPage
 
 
 class KajunApplication(BaseKajunApp):
-    def __init__(self, app: QApplication) -> None:
-        super(KajunApplication, self).__init__(app, KajunApplicationType.MAINWINDOW)
+    def __init__(self) -> None:
+        super(KajunApplication, self).__init__(KajunApplicationType.MAINWINDOW)
 
     
     def initialiseProperties(self) -> None:
         super(KajunApplication, self).initialiseProperties()
-        self.setFixedSize(800, 600)
+        self.setFixedSize(900, 600)
         self.setWindowTitle("Kajun Application")
 
 

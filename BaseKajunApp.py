@@ -2,7 +2,7 @@ import os
 import enum
 
 from PySide6.QtGui import QPixmap, QMouseEvent, QCursor, QKeyEvent, QAction, QKeySequence
-from PySide6.QtWidgets import QApplication, QWidget, QMessageBox, QMenu
+from PySide6.QtWidgets import QWidget, QMessageBox, QMenu
 from PySide6.QtCore import Qt, QEvent
 
 import BaseProgress
@@ -20,18 +20,17 @@ class KajunApplicationType(enum.Enum):
 
 
 class BaseKajunApp(QWidget):
-    def __init__(self, app: QApplication, appType: KajunApplicationType) -> None:
+    def __init__(self, appType: KajunApplicationType) -> None:
         super(BaseKajunApp, self).__init__()
 
          # Don't change the function call order
-        self.initialiseMemberVariables(app, appType)
+        self.initialiseMemberVariables(appType)
         self.initialiseProperties() 
         self.initialiseComponents()
         self.initialisePopUpMenu()   
 
     
-    def initialiseMemberVariables(self, app: QApplication, appType: KajunApplicationType) -> None:
-        self.app = app
+    def initialiseMemberVariables(self, appType: KajunApplicationType) -> None:
         self.appType = appType
         self.pixmap = QPixmap(os.path.join(Path, "images", "kajun_logo.png"))
 
@@ -49,10 +48,10 @@ class BaseKajunApp(QWidget):
 
     
     def initialisePopUpMenu(self) -> None:
-        # Pop-up Quit Action
+        # Pop-up Close Action
         self.quitAction = QAction("Close")
         self.quitAction.setShortcut(QKeySequence("c"))
-        self.quitAction.triggered.connect(self.quit)
+        self.quitAction.triggered.connect(self.close)
         self.popup.addAction(self.quitAction)
 
         self.popup.addSeparator()
@@ -96,7 +95,7 @@ class BaseKajunApp(QWidget):
     
     def keyPressEvent(self, event: QKeyEvent) -> None:
             if event.key() == 67:
-                self.quit()
+                self.close()
             else:
                 super(BaseKajunApp, self).keyPressEvent(event)      
 
@@ -124,7 +123,3 @@ class BaseKajunApp(QWidget):
 
     def stopProgress(self) -> int:
         self.progress.stopProgress(self.appType)
-
-
-    def quit(self) -> None:
-        self.app.quit()

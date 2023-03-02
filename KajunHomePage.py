@@ -1,5 +1,9 @@
-from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout
-from PySide6.QtCore import Qt
+import os
+
+from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout, QSizePolicy
+from PySide6.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtWebEngineCore import QWebEngineHttpRequest
+from PySide6.QtCore import Qt, QUrl
 
 import KajunApplication
 
@@ -29,10 +33,10 @@ class KajunHomePage(QFrame):
         self.pageLayout.setContentsMargins(20, 10, 20, 10)
         self.pageLayout.addSpacing(10)
 
-        #Test Label
-        self.titleLabel = QLabel("Kajun Home Page")
-        self.titleLabel.setStyleSheet("font-size: 24px;")
-        self.titleLabel.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.pageLayout.addWidget(self.titleLabel)
+        # Web Engine View
+        self.webEngineView = QWebEngineView(parent=self)
+        self.webEngineView.setSizePolicy(QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding))
+        self.webEngineView.load(QUrl().fromLocalFile(os.path.split(os.path.abspath(__file__))[0]+ r"\My-Basic-Website\index.html"))
+        self.pageLayout.addWidget(self.webEngineView)
 
         self.setLayout(self.pageLayout)
