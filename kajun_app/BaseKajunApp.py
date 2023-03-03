@@ -105,6 +105,10 @@ class BaseKajunApp(QWidget):
     def setKajunSystemInfo(self, kajunSystemInfo: list[KajunSystemData]) -> None:
         self.kajunSystemInfo = kajunSystemInfo
 
+
+    def getKajunSystemInfo(self) -> list[KajunSystemData]:
+        return self.kajunSystemInfo
+    
     
     def loadSystemInfo(self) -> bool:
         return False

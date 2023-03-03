@@ -1,4 +1,4 @@
-from PySide6.QtGui import QAction, QKeySequence, QKeyEvent
+from PySide6.QtGui import QAction, QKeySequence, QKeyEvent, QCloseEvent
 from PySide6.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout
 from PySide6.QtCore import Qt
 
@@ -105,3 +105,8 @@ class KajunApplication(BaseKajunApp):
             self.vulnerabilitiesPage()
         else:
             super(KajunApplication, self).keyPressEvent(event)
+
+    
+    def closeEvent(self, event: QCloseEvent) -> None:
+        self.hide()
+        event.ignore()

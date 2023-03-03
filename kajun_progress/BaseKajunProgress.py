@@ -1,3 +1,7 @@
+import threading
+import time
+import pandas as pd
+
 from PySide6.QtWidgets import QApplication
 
 from kajun_app.KajunAppFactory import KajunAppFactory 
@@ -18,6 +22,7 @@ class BaseKajunProgress:
 
     def initialiseMemberVariables(self, app: QApplication) -> None:
         self.app = app
+        self.workerThread = threading.Thread(target=self.worker, daemon=True)
         self.systemTrayIcon = KajunSystemTrayIcon(self.app)
         self.appFactory = KajunAppFactory()
 
@@ -28,19 +33,41 @@ class BaseKajunProgress:
 
     def getSystemData(self) -> list[KajunSystemData]:
         return list[KajunSystemData]
+    
+
+    def checkVulnerabilities(self) -> list[KajunSystemData]:
+        return list[KajunSystemData]
+
+
+    def worker(self) -> None:
+        while True:
+            time.sleep(10.0)
+            newSystemInfo = self.checkVulnerabilities()
+            try:
+                if newSystemInfo[0] != None:
+                    self.systemTrayIcon.newSystemInfoReceived(newSystemInfo)
+            except:
+                continue
+                
 
 
     def initialise(self) -> int:
-        splash = self.getKajunApplication(KajunApplicationType.SPLASHSCREEN)
+        # Load System Data
         systemData = self.getSystemData()
+        self.systemTrayIcon.setSystemInfo(systemData)
+
+        # Start Worker Thread
+        self.workerThread.start()
+
+        # Load Splash
+        splash = self.getKajunApplication(KajunApplicationType.SPLASHSCREEN)
         splash.setKajunSystemInfo(systemData)
         splash.show()
         
         if splash.loadSystemInfo():
             self.systemTrayIcon.showInformation(DefaultInfoText)
             splash.close()
-            mainWindow = self.getKajunApplication(KajunApplicationType.MAINWINDOW)
-            mainWindow.show()
+            self.systemTrayIcon.showMainWindow()
         else:
             splash.showWarning(DefaultWarningText)
             
