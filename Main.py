@@ -1,13 +1,15 @@
 import sys
+import os
 
 from PySide6.QtWidgets import QApplication
 
-from BaseProgress import BaseProgress
-# Test Progress
-from TestProgress import TestProgress
+from kajun_progress import BaseKajunProgress, TestProgress
 
 
-def getMainProgress(app: QApplication) -> BaseProgress:
+sys.path.insert(0, os.path.dirname(__file__)) # Set Project Directory to system
+
+
+def getMainProgress(app: QApplication) -> BaseKajunProgress:
     return TestProgress(app)
 
 
